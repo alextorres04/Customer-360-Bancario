@@ -1,0 +1,17 @@
+agencia_sk,agencia_id,nombre,ciudad,distrito,es_virtual
+1,1,Agencia Central,Lima,Cercado de Lima,False
+2,2,Agencia Miraflores,Lima,Miraflores,False
+3,3,Agencia San Isidro,Lima,San Isidro,False
+4,4,Agencia Surco,Lima,Santiago de Surco,False
+5,5,Agencia San Borja,Lima,San Borja,False
+6,6,Agencia Callao,Callao,Callao,False
+7,7,Agencia Arequipa Centro,Arequipa,Cercado,False
+8,8,Agencia Cayma,Arequipa,Cayma,False
+9,9,Agencia Trujillo Centro,Trujillo,Trujillo,False
+10,10,Agencia El Porvenir,Trujillo,El Porvenir,False
+11,11,Agencia Chiclayo,Chiclayo,Chiclayo,False
+12,12,Agencia Piura Centro,Piura,Piura,False
+13,13,Agencia Cusco,Cusco,Cusco,False
+14,14,Agencia Iquitos,Iquitos,Iquitos,False
+15,15,Agencia Huancayo,Huancayo,Huancayo,False
+16,16,Canal Digital,,,True

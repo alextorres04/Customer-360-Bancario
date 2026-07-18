@@ -1,0 +1,14 @@
+producto_sk,producto_id,nombre,categoria,comision_pct,costo_fondeo_pct
+1,1,Cuenta de Ahorros Estándar,Cuenta,0.001,0.02
+2,2,Cuenta Corriente Empresarial,Cuenta,0.0015,0.018
+3,3,Cuenta Plazo Fijo 180 días,Cuenta,0.0005,0.035
+4,4,Tarjeta Débito Clásica,Tarjeta,0.0008,0.0
+5,5,Tarjeta Crédito Oro,Tarjeta,0.02,0.045
+6,6,Tarjeta Crédito Platinum,Tarjeta,0.025,0.042
+7,7,Préstamo Personal Estándar,Préstamo,0.0,0.06
+8,8,Préstamo Vehicular,Préstamo,0.0,0.055
+9,9,Préstamo Hipotecario Simple,Préstamo,0.0,0.048
+10,10,Seguro de Vida Básico,Seguro,0.05,0.0
+11,11,Seguro Vehicular Estándar,Seguro,0.045,0.0
+12,12,Seguro de Hogar,Seguro,0.04,0.0
+13,13,Seguro Desgravamen,Seguro,0.03,0.0
