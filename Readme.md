@@ -352,4 +352,4 @@ Abre `dashboard/Customer360_Dashboard.pbix` en Power BI Desktop y conecta a tu i
 **Cesar Alexander Macalopu Torres**
 Data Analyst | Python | SQL | Power BI | Machine Learning
 
-GitHub: [tu_usuario](https://github.com/tu_usuario)
+GitHub:  [alextorres04](https://github.com/alextorres04)
