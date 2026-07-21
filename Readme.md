@@ -70,18 +70,249 @@ Los datos son sintéticos, generados con Python para fines de portafolio. La gen
 
 ---
 
-## 🗄️ Modelo de datos
-
-El proyecto implementa dos modelos de datos complementarios:
-
-### Modelo A — Base Relacional Normalizada (OLTP)
-10 tablas: Cliente, Cuenta, Tarjeta, Préstamo, Pago, Transacción, Seguro, Producto, Canal, Agencia.
-
-### Modelo B — Esquema Estrella (Data Warehouse)
-- **5 dimensiones:** Dim_Cliente, Dim_Fecha, Dim_Producto, Dim_Canal, Dim_Agencia
-- **4 tablas de hechos:** Fact_Transacciones, Fact_Prestamos, Fact_Pagos, Fact_Productos_Contratados
+Diagramas de Base de Datos
 
 ---
+
+## MODELO A — Base Relacional Normalizada (OLTP)
+
+```mermaid
+erDiagram
+    CLIENTE {
+        int cliente_id PK
+        string nombre
+        string apellido
+        date fecha_nacimiento
+        char sexo
+        string estado_civil
+        string profesion
+        numeric ingreso_mensual
+        string ciudad
+        date fecha_registro
+    }
+
+    PRODUCTO {
+        int producto_id PK
+        string nombre
+        string categoria
+        numeric comision_pct
+        numeric costo_fondeo_pct
+    }
+
+    CUENTA {
+        int cuenta_id PK
+        int cliente_id FK
+        int producto_id FK
+        string tipo_cuenta
+        numeric saldo
+        date fecha_apertura
+        date fecha_ultimo_movimiento
+        string estado
+    }
+
+    TARJETA {
+        int tarjeta_id PK
+        int cliente_id FK
+        int producto_id FK
+        string tipo
+        numeric limite_credito
+        date fecha_emision
+        string estado
+    }
+
+    PRESTAMO {
+        int prestamo_id PK
+        int cliente_id FK
+        int producto_id FK
+        numeric monto
+        numeric tasa_interes
+        int plazo_meses
+        numeric score_riesgo
+        date fecha_desembolso
+        string estado
+    }
+
+    PAGO {
+        int pago_id PK
+        int prestamo_id FK
+        int numero_cuota
+        date fecha_programada
+        date fecha_pago
+        numeric monto_programado
+        numeric monto_pagado
+        int dias_mora
+        string estado_pago
+    }
+
+    TRANSACCION {
+        bigint transaccion_id PK
+        int cuenta_id FK
+        int producto_id FK
+        int canal_id FK
+        int agencia_id FK
+        timestamp fecha
+        numeric monto
+        string tipo_transaccion
+    }
+
+    SEGURO {
+        int seguro_id PK
+        int cliente_id FK
+        int producto_id FK
+        string tipo_seguro
+        numeric prima_mensual
+        date fecha_inicio
+        string estado
+    }
+
+    CANAL {
+        int canal_id PK
+        string nombre
+    }
+
+    AGENCIA {
+        int agencia_id PK
+        string nombre
+        string ciudad
+        string distrito
+        boolean es_virtual
+    }
+
+    CLIENTE ||--o{ CUENTA       : "posee"
+    CLIENTE ||--o{ TARJETA      : "posee"
+    CLIENTE ||--o{ PRESTAMO     : "solicita"
+    CLIENTE ||--o{ SEGURO       : "contrata"
+    PRODUCTO ||--o{ CUENTA      : "define"
+    PRODUCTO ||--o{ TARJETA     : "define"
+    PRODUCTO ||--o{ PRESTAMO    : "define"
+    PRODUCTO ||--o{ SEGURO      : "define"
+    PRODUCTO ||--o{ TRANSACCION : "clasifica"
+    CUENTA   ||--o{ TRANSACCION : "registra"
+    CANAL    ||--o{ TRANSACCION : "origina"
+    AGENCIA  ||--o{ TRANSACCION : "registra"
+    PRESTAMO ||--|{ PAGO        : "genera"
+```
+
+---
+
+## MODELO B — Esquema Estrella (Data Warehouse)
+
+```mermaid
+erDiagram
+    DIM_CLIENTE {
+        int cliente_sk PK
+        int cliente_id
+        string nombre_completo
+        int edad
+        char sexo
+        string estado_civil
+        string profesion
+        numeric ingreso_mensual
+        string ciudad
+        string segmento_rfm
+        numeric prob_churn
+        int antiguedad_meses
+        date fecha_registro
+        timestamp fecha_carga
+    }
+
+    DIM_PRODUCTO {
+        int producto_sk PK
+        int producto_id
+        string nombre
+        string categoria
+        numeric comision_pct
+        numeric costo_fondeo_pct
+    }
+
+    DIM_FECHA {
+        int fecha_sk PK
+        date fecha
+        int anio
+        int mes
+        int trimestre
+        string dia_semana
+        boolean es_fin_semana
+    }
+
+    DIM_CANAL {
+        int canal_sk PK
+        int canal_id
+        string nombre
+    }
+
+    DIM_AGENCIA {
+        int agencia_sk PK
+        int agencia_id
+        string nombre
+        string ciudad
+        string distrito
+        boolean es_virtual
+    }
+
+    FACT_TRANSACCIONES {
+        bigint transaccion_id PK
+        int cliente_sk FK
+        int fecha_sk FK
+        int producto_sk FK
+        int canal_sk FK
+        int agencia_sk FK
+        string tipo_transaccion
+        numeric monto
+        numeric ingreso_comision
+    }
+
+    FACT_PRESTAMOS {
+        int prestamo_id PK
+        int cliente_sk FK
+        int fecha_sk FK
+        int producto_sk FK
+        numeric monto
+        numeric tasa_interes
+        int plazo_meses
+        numeric ingreso_estimado
+        numeric costo_fondeo_estimado
+        numeric score_riesgo
+        int max_dias_mora
+        boolean es_default
+        numeric margen_estimado
+    }
+
+    FACT_PAGOS {
+        int pago_id PK
+        int prestamo_id FK
+        int fecha_sk FK
+        int dias_mora
+        string estado_pago
+    }
+
+    FACT_PRODUCTOS_CONTRATADOS {
+        bigint contrato_id PK
+        int cliente_sk FK
+        int fecha_sk FK
+        int producto_sk FK
+        string tipo_producto
+        numeric monto_referencia
+        string estado
+    }
+
+    DIM_CLIENTE  ||--o{ FACT_TRANSACCIONES         : "participa"
+    DIM_FECHA    ||--o{ FACT_TRANSACCIONES         : "ocurre_en"
+    DIM_PRODUCTO ||--o{ FACT_TRANSACCIONES         : "clasifica"
+    DIM_CANAL    ||--o{ FACT_TRANSACCIONES         : "origina"
+    DIM_AGENCIA  ||--o{ FACT_TRANSACCIONES         : "registra"
+
+    DIM_CLIENTE  ||--o{ FACT_PRESTAMOS             : "solicita"
+    DIM_FECHA    ||--o{ FACT_PRESTAMOS             : "desembolsado_en"
+    DIM_PRODUCTO ||--o{ FACT_PRESTAMOS             : "clasifica"
+
+    FACT_PRESTAMOS ||--|{ FACT_PAGOS               : "genera"
+    DIM_FECHA      ||--o{ FACT_PAGOS               : "programado_en"
+
+    DIM_CLIENTE  ||--o{ FACT_PRODUCTOS_CONTRATADOS : "contrata"
+    DIM_FECHA    ||--o{ FACT_PRODUCTOS_CONTRATADOS : "emitido_en"
+    DIM_PRODUCTO ||--o{ FACT_PRODUCTOS_CONTRATADOS : "clasifica"
+```
 
 ## 🏗️ Arquitectura del proyecto
 
