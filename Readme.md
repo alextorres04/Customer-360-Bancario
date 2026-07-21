@@ -390,7 +390,15 @@ Documentación del diccionario de datos completo para el Modelo A (OLTP) y el Mo
 Generación de datos sintéticos en Python con distribuciones estadísticas realistas. Construcción del proceso ETL en dos pasadas: carga inicial con campos ML en NULL y actualización post-modelado.
 
 ### Fase 4 — Consultas SQL analíticas
-Respuesta a 7 preguntas de negocio directamente desde el Data Warehouse incluyendo top clientes por rentabilidad, índice de morosidad por ciudad, monto en riesgo latente y oportunidades de cross-selling.
+Se respondieron 7 preguntas de negocio directamente desde el Data Warehouse:
+
+1. ¿Quiénes son los 10 clientes más rentables para el banco?
+2. ¿Cuál es el índice de morosidad por ciudad?
+3. ¿Qué canal es el más utilizado y el más rentable?
+4. ¿Qué clientes están en riesgo de abandono?
+5. ¿Qué productos generan mayores ingresos para el banco?
+6. ¿Cuál es el monto en riesgo latente por ciudad?
+7. ¿Qué ciudades tienen mayor oportunidad de cross-selling?
 
 ### Fase 5 — EDA e ingeniería de variables
 
