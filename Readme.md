@@ -68,13 +68,12 @@ Los datos son sintéticos, generados con Python para fines de portafolio. La gen
 | Transacciones | 148,212 |
 | Seguros | 3,258 |
 
----
+## 🗄️ Modelo de datos
 
-Diagramas de Base de Datos
-
----
+El proyecto implementa dos modelos de datos complementarios:
 
 ## MODELO A — Base Relacional Normalizada (OLTP)
+10 tablas: Cliente, Cuenta, Tarjeta, Préstamo, Pago, Transacción, Seguro, Producto, Canal, Agencia.
 
 ```mermaid
 erDiagram
@@ -196,6 +195,8 @@ erDiagram
 ---
 
 ## MODELO B — Esquema Estrella (Data Warehouse)
+5 dimensiones: Dim_Cliente, Dim_Fecha, Dim_Producto, Dim_Canal, Dim_Agencia
+4 tablas de hechos: Fact_Transacciones, Fact_Prestamos, Fact_Pagos, Fact_Productos_Contratados
 
 ```mermaid
 erDiagram
