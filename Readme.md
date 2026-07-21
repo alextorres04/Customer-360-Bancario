@@ -195,7 +195,9 @@ erDiagram
 ---
 
 ## MODELO B — Esquema Estrella (Data Warehouse)
-5 dimensiones: Dim_Cliente, Dim_Fecha, Dim_Producto, Dim_Canal, Dim_Agencia
+5 dimensiones: Dim_Cliente, Dim_Fecha, Dim_Producto, Dim_Canal, 
+Dim_Agencia
+
 4 tablas de hechos: Fact_Transacciones, Fact_Prestamos, Fact_Pagos, Fact_Productos_Contratados
 
 ```mermaid
